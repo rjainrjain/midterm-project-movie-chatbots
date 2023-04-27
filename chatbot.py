@@ -406,7 +406,7 @@ class Chatbot:
             - num_return (optional, int): The number of movies to recommend
 
         Example: 
-            bot_recommends = chatbot.recommend_movie({100: 1, 202: -1, 303: 1, 404:1, 505: 1})
+            bot_recommends = chatbot.recommend_movies({100: 1, 202: -1, 303: 1, 404:1, 505: 1})
             print(bot_recommends) // prints ['Trick or Treat (1986)', 'Dunston Checks In (1996)', 
             'Problem Child (1990)']
 
