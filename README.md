@@ -127,7 +127,7 @@ Your grade will consist of your work for the following functions in `chatbot.py`
 | Part | Functions to implement | Points | Auto-graded?|
 | -------- | -------- | -------- | -------- |
 | 1 - Warm-up    | `intro()`, `greeting()`, and `goodbye()`  | 5 | No |
-| 2 - Extracting and Transforming | `process()` | 20 | No |
+| 2 - Extracting and Transforming | `process()` | 20 | No - see below |
 | | `extract_titles()` | 5 | Yes |
 | | `find_movies_idx_by_title()` | 5 | Yes |
 | | `disambiguate_candidates()` | 5 | Yes | 
@@ -136,8 +136,8 @@ Your grade will consist of your work for the following functions in `chatbot.py`
 | | `train_logreg_sentiment_classifier()` | 10 | Yes | 
 | | `predict_sentiment_statistical()` | 4 | Yes | 
 | 4 - Recommend |`recommend_movies()` | 2 | Yes|
-| 5 - Open-ended | `function1()` | 10 | No | 
-| | `function2()` | 10 | No | 
+| 5 - Open-ended | `function1()` | 10 | No - see below | 
+| | `function2()` | 10 | No - see below | 
 | | Additional functions | Extra credit | No | 
 | 6 - Ethics | Response in `ethics.py` | 10 | No| 
 ||||**Full assigment due: Fri April 28 3:59pm**||
