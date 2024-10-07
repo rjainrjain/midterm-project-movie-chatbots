@@ -34,9 +34,9 @@ user> I really liked Moneyball.
 The bot gets confused because it only recognizes movies in quotation marks. 
 
 ```
-chatbot> Sorry, I don't understand. Tell me about a movie that you've seen with the title in quotation marks. 
+chatbot> Sorry, I don't understand. Tell me about a *single* movie that you've seen with the title in quotation marks.
 
-user> I really liked "Moneyball".
+user> I like "Moneyball".
 
 chatbot> You liked "Moneyball". Thank you! I have your preferences for 1/5 movies. Tell me about another movie you have seen.
 
@@ -47,19 +47,19 @@ The sentence above was too hard for the bot to predict sentiment, but the bot re
 ```
 chatbot > I'm sorry, I'm not quite sure if you liked "Rush Hour". Tell me more about "Rush Hour" (possibly in simpler terms).
 
-user> I hated "Rush Hour".
+user> I hate "Rush Hour".
 
 chatbot> Ok. You disliked "Rush Hour." There are multiple Rush Hours. 
 Did you mean "Rush Hour (1998)", "Rush Hour 2 (2001)", or "Rush Hour 3 (2007)"?
 
-user> "Rush Hour 2"
+user> Rush Hour 2
 
 chatbot> Ok. You meant you disliked "Rush Hour 2 (2001)." Thank you! I have your preferences for 2/5 movies. Tell me about another movie you have seen.
 ```
 Above, the chatbot is able to disambiguate between multiple movies that match "Rush Hour" in its movie database. 
 
 ```
-user> I didn't like "The Notebook".
+user> I like love "Copycat"
 ```
 ... the bot proceeds to gather sentiment ratings from the user for 5 movies. 
 
