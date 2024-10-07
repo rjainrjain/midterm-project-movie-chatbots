@@ -77,7 +77,7 @@ class Chatbot:
         Return a message that the chatbot uses to bid farewell to the user.
         """
         ########################################################################
-        # TODO: Delete the line below and replace with your own                                 #
+        # TODO: Delete the line below and replace with your own                #
         ########################################################################
 
         goodbye_message = "Have a nice day!"
@@ -123,8 +123,13 @@ class Chatbot:
         Returns: a string containing the chatbot's response to the user input
 
         Hints: 
+            - We recommend doing this function last (after you've completed the
+            helper functions below)
+            - Try sketching a control-flow diagram (on paper) before you begin 
+            this 
             - We highly recommend making use of the class structure and class 
             variables when dealing with the REPL loop. 
+            - Feel free to make as many helper funtions as you would like 
         """
         ########################################################################
         # TODO: Implement the extraction and transformation in this method,    #

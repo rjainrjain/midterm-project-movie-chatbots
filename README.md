@@ -45,7 +45,7 @@ user> I was completely amazed at how "Rush Hour" was pretty much the most ridicu
 The sentence above was too hard for the bot to predict sentiment, but the bot recovers. 
 
 ```
-chatbot > I'm sorry, I'm not quite sure if you liked "Rush Hour". Tell me more about "Rush Hour".
+chatbot > I'm sorry, I'm not quite sure if you liked "Rush Hour". Tell me more about "Rush Hour" (possibly in simpler terms).
 
 user> I hated "Rush Hour".
 
@@ -65,11 +65,12 @@ user> I didn't like "The Notebook".
 
 ```
 chatbot> Thanks! I have five movies to make a recommendation. 
-I suggest you watch "Happy Gilmore (1996)". Would you like to hear another recommendation? (Or enter :quit if you're done.)
+I suggest you watch "Happy Gilmore (1996)". Would you like to hear another recommendation? (Yes/No)
+(Or enter :quit if you're done.)
 
-user> Yes! 
+user> Yes 
 
-chatbot> I suggest you watch "Kicking and Screaming (1995)". Would you like to hear another recommendation? (Or enter :quit if you're done.)
+chatbot> I suggest you watch "Kicking and Screaming (1995)". Would you like to hear another recommendation (Yes/No)? (Or enter :quit if you're done.)
 
 user> :quit
 
