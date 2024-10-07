@@ -61,8 +61,8 @@ Delete and put your answer here
 QUESTION 4 - Refelection 
 
 You just built a frame-based dialogue system using a combination of rule-based and machine learning 
-approaches. Congratulations! What are the advantages and disadvantages of this paradigm 
-compared to an end-to-end deep learning approach, e.g. ChatGPT? 
+approaches. Congratulations! Brainstorm some advantages and disadvantages of this paradigm 
+compared to the end-to-end deep learning approach we will learn next, e.g. ChatGPT. 
 """
 
 Q4_your_answer = """

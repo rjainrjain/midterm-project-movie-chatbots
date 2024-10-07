@@ -1,3 +1,8 @@
+"""
+Class that implements the chatbot for CSCI 375's Midterm Project. 
+
+Please follow the TODOs below with your code. 
+"""
 import numpy as np
 import argparse
 import joblib
@@ -12,7 +17,7 @@ from typing import List, Dict, Union, Tuple
 import util
 
 class Chatbot:
-    """Class that implements the chatbot for HW 6."""
+    """Class that implements the chatbot for CSCI 375's Midterm Project"""
 
     def __init__(self):
         # The chatbot's default name is `moviebot`.
@@ -45,7 +50,7 @@ class Chatbot:
 
         # TODO: delete and replace the line below
         return """
-        Your task is to implement the chatbot as detailed in the HW6
+        Your task is to implement the chatbot as detailed in the
         instructions (README.md).
 
         To exit: write ":quit" (or press Ctrl-C to force the exit)

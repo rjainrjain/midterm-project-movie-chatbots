@@ -1,7 +1,7 @@
 """
-You do not need to modify anything in this file. 
+The REPL loop file. 
 
-Adapted from https://github.com/cs124/pa7-chatbot/blob/main/repl.py
+You do not need to modify anything in this file. 
 """
 import argparse
 import cmd
@@ -17,14 +17,7 @@ logger = logging.getLogger(__name__)
 from chatbot import Chatbot
 
 # Modular ASCII font from http://patorjk.com/software/taag/
-HEADER = """Welcome to Willimas College CS 375's
- __   __  _     _  ___                                         
-|  | |  || | _ | ||   |                                        
-|  |_|  || || || ||   |___                                     
-|       ||       ||    _  |                                    
-|       ||       ||   | | |                                    
-|   _   ||   _   ||   |_| |                                    
-|__| |__||__| |__||_______|                                    
+HEADER = """Welcome to Willimas College CS 375's                                  
  _______  __   __  _______  _______  _______  _______  _______ 
 |       ||  | |  ||   _   ||       ||  _    ||       ||       |
 |       ||  |_|  ||  |_|  ||_     _|| |_|   ||   _   ||_     _|

@@ -1,7 +1,8 @@
-"""Utility methods to load movie data from data files.
-Also includes recommendation modules.  
+"""
+Utility methods to load movie data from data files.
+Also includes recommendation modules.
 
-Adapted from https://raw.githubusercontent.com/cs124/pa7-chatbot/main/util.py
+You do not need to modify anything in this file.   
 """
 import csv
 from typing import Tuple, List, Dict
