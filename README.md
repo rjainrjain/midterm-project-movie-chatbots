@@ -59,18 +59,17 @@ chatbot> Ok. You meant you disliked "Rush Hour 2 (2001)." Thank you! I have your
 Above, the chatbot is able to disambiguate between multiple movies that match "Rush Hour" in its movie database. 
 
 ```
-
 user> I didn't like "The Notebook".
 ```
 ... the bot proceeds to gather sentiment ratings from the user for 5 movies. 
 
 ```
 chatbot> Thanks! I have five movies to make a recommendation. 
-I suggest you watch "In the Heart of the Sea".
+I suggest you watch "Happy Gilmore (1996)". Would you like to hear another recommendation? (Or enter :quit if you're done.)
 
-user> Great. Thanks! 
+user> Yes! 
 
-chatbot> Would you like to hear another recommendation? (Or enter :quit if you're done.)
+chatbot> I suggest you watch "Kicking and Screaming (1995)". Would you like to hear another recommendation? (Or enter :quit if you're done.)
 
 user> :quit
 
