@@ -1,12 +1,12 @@
-# Homework 6: Chatbots
+#  Midterm Project: Movie Chatbot
 
 The goals of this homework is to build a dialogue system that makes movie recommendations to a user. You will use a frame-based approach and implement both rule-based and machine-learning based modules.  
 
 
 ## Submission instructions
 
-- You must work in your final project groups. 
-- Your submitted solution and code must be your group's work alone. Copying and pasting a solution from the internet or another source is considered a violation of the **honor code**.
+- This assignment will be done in **groups of 2 students**. 
+- Your submitted solution and code must be your group's work alone. Please remember the 50-foot rule. Copying and pasting a solution from the internet or another source is considered a violation of the **honor code**.
 - Because this is a group submission, there are no late days and no late submissions will be accepted. 
 - Submit one submission per group to gradescope. To submit run the following command on the command line from this folder: 
 	
@@ -26,8 +26,8 @@ The goal of your chatbot is to provide movie recommendations to a user. In order
 Here's an example of what an interaction between your chatbot and a human user might look like. You goal is to emulate this functionality (but chatbot's exact wording can change). 
 
 ```
-chatbot> Hi! I'm MovieBot! I'm going to recommend a movie to you. First I will ask you about your taste in movies. 
-Tell me about a movie that you have seen.
+chatbot> Hi! I'm MovieBot! I'm going to recommend a movie to you. First I will ask you about your taste in (at least) five movies.  
+Tell me about a movie that you've seen recently (with the title in quotation marks).
 
 user> I really liked Moneyball.
 ```
@@ -38,7 +38,7 @@ chatbot> Sorry, I don't understand. Tell me about a movie that you've seen with 
 
 user> I really liked "Moneyball".
 
-chatbot> You liked "Moneyball". Thank you! Tell me about another movie you have seen.
+chatbot> You liked "Moneyball". Thank you! I have your preferences for 1/5 movies. Tell me about another movie you have seen.
 
 user> I was completely amazed at how "Rush Hour" was pretty much the most ridiculous thing I've seen in my entire life.
 ``` 
@@ -54,19 +54,18 @@ Did you mean "Rush Hour (1998)", "Rush Hour 2 (2001)", or "Rush Hour 3 (2007)"?
 
 user> "Rush Hour 2"
 
-chatbot> Ok. You meant "Rush Hour 2 (2001)" 
+chatbot> Ok. You meant you disliked "Rush Hour 2 (2001)." Thank you! I have your preferences for 2/5 movies. Tell me about another movie you have seen.
 ```
 Above, the chatbot is able to disambiguate between multiple movies that match "Rush Hour" in its movie database. 
 
 ```
-chatbot> I want to hear more about movies! Tell me about another movie you have seen.
 
 user> I didn't like "The Notebook".
 ```
 ... the bot proceeds to gather sentiment ratings from the user for 5 movies. 
 
 ```
-chatbot> Thanks! That's enough for me to make a recommendation. 
+chatbot> Thanks! I have five movies to make a recommendation. 
 I suggest you watch "In the Heart of the Sea".
 
 user> Great. Thanks! 
@@ -131,7 +130,7 @@ Your grade will consist of your work for the following functions in `chatbot.py`
 | | `extract_titles()` | 5 | Yes |
 | | `find_movies_idx_by_title()` | 5 | Yes |
 | | `disambiguate_candidates()` | 5 | Yes | 
-| | ||**Checkpoint (Parts 1&2): Due Fri April 21 3:59pm** |
+| | ||**Checkpoint (Parts 1&2): Due Th Oct 17 10pm** |
 | 3 - Sentiment | `predict_sentiment_rule_based()` | 5 | Yes|
 | | `train_logreg_sentiment_classifier()` | 10 | Yes | 
 | | `predict_sentiment_statistical()` | 4 | Yes | 
@@ -140,9 +139,9 @@ Your grade will consist of your work for the following functions in `chatbot.py`
 | | `function2()` | 10 | No - see below | 
 | | Additional functions | Extra credit | No | 
 | 6 - Ethics | Response in `ethics.py` | 10 | No| 
-||||**Full assigment due: Fri April 28 3:59pm**||
+||||**Full assigment due: Th Oct 24 10pm**||
 
-By Friday, April 21, you must submit code for Parts 1 & 2 to the Gradescope autograder. A failure to do so by the checkpoint date will result in a loss of the autograder points for Part 2. 
+By Thursday Oct 17, you must submit code for Parts 1 & 2 to the Gradescope autograder. A failure to do so by the checkpoint date will result in a loss of those autograder points for the final submission. 
 
 ### Grading `process()`
 
@@ -195,7 +194,7 @@ In `data/sentiment.txt`, we provide a sentiment lexicon that you can use to extr
 
 ### Rotten Tomatoes Reviews
 
-In `data/rotten_tomatoes.pkl`, we provide a subset of the [Rotten Tomatoes dataset from Kaggle.](https://www.kaggle.com/competitions/sentiment-analysis-on-movie-reviews/data). This dataset includes reviews in the form of text and class labels "fresh" and "rotten". 
+In `data/rotten_tomatoes.pkl`, we provide a subset of the [Rotten Tomatoes dataset from Kaggle](https://www.kaggle.com/competitions/sentiment-analysis-on-movie-reviews/data). This dataset includes reviews in the form of text and class labels "fresh" and "rotten". 
 
 
 ### Movie recommendation database 
@@ -207,7 +206,7 @@ Your `movie database` consits of two files:
 
 This data comes from [MovieLens](https://movielens.org/) and consists of a total of 9125 movies rated by 671 users. Feel free to browse this data in a text editor. 
 
-The file `data/ratings.txt` includes a 9125 x 671 utility matrix that contains ratings for users and movies. The ratings range anywhere from 1.0 to 5.0 with increments of 0.5. The code will binarize the ratings as follows:
+The file `data/ratings.txt` includes a `9125 x 671` utility matrix that contains ratings for users and movies. The ratings range anywhere from 1.0 to 5.0 with increments of 0.5. The code will binarize the ratings as follows:
 
 ```
 +1 if the user liked the movie (3.0-5.0)
@@ -226,7 +225,7 @@ We also provide `data/movies.txt`, a list with 9125 movie titles and their assoc
 
 ### Collaborating
 
-Since you will be developing this code in a group, we highly recommend you use a private repository on `Github` and add each other as collaborators. Use version control and `git pull` and `git push` to share code. 
+Since you will be developing this code in a group, we highly recommend you use a private repository on `Github` and add each other as collaborators. Use version control and `git` commands (`commit`, `push`, `pull') to share code. 
 
 ### Developing
 
