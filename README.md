@@ -13,7 +13,7 @@ The goals of this homework is to build a dialogue system that makes movie recomm
 	```
 	./generate_submission.sh 
 	```
-	Then submit `submission.zip` to Gradescope. 
+	Then submit `submission.zip` to Gradescope. [Here are instructions](https://guides.gradescope.com/hc/en-us/articles/21863861823373-Adding-Group-Members-to-a-Submission) for adding group members to a Gradescope submission.
 
 ## Goal with example 
 
