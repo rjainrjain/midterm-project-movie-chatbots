@@ -121,13 +121,12 @@ To get started:
 	
 ## Grading
 
-Your grade will consist of your work for the following functions in `chatbot.py` and `ethics.py`. Remember, HW6 is double the points of previous homeworks. 
+Your grade will consist of your work for the following functions in `chatbot.py` and `thought.py`. 
 
 | Part | Functions to implement | Points | Auto-graded?|
 | -------- | -------- | -------- | -------- |
 | 1 - Warm-up    | `intro()`, `greeting()`, and `goodbye()`  | 5 | No |
-| 2 - Extracting and Transforming | `process()` | 20 | No - see below |
-| | `extract_titles()` | 5 | Yes |
+| 2 - Extracting and Transforming | `extract_titles()` | 5 | Yes |
 | | `find_movies_idx_by_title()` | 5 | Yes |
 | | `disambiguate_candidates()` | 5 | Yes | 
 | | ||**Checkpoint (Parts 1&2): Due Th Oct 17 10pm** |
@@ -135,10 +134,11 @@ Your grade will consist of your work for the following functions in `chatbot.py`
 | | `train_logreg_sentiment_classifier()` | 10 | Yes | 
 | | `predict_sentiment_statistical()` | 4 | Yes | 
 | 4 - Recommend |`recommend_movies()` | 2 | Yes|
-| 5 - Open-ended | `function1()` | 10 | No - see below | 
+| 5 - Control flow | `process()` | 20 | No - see below |
+| 6 - Open-ended | `function1()` | 10 | No - see below | 
 | | `function2()` | 10 | No - see below | 
 | | Additional functions | Extra credit | No | 
-| 6 - Ethics | Response in `ethics.py` | 10 | No| 
+| 7 - Thought questions | Response in `thought.py` | 10 | No| 
 ||||**Full assigment due: Th Oct 24 10pm**||
 
 By Thursday Oct 17, you must submit code for Parts 1 & 2 to the Gradescope autograder. A failure to do so by the checkpoint date will result in a loss of those autograder points for the final submission. 
