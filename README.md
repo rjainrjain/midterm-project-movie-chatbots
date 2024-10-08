@@ -225,7 +225,7 @@ We also provide `data/movies.txt`, a list with 9125 movie titles and their assoc
 
 ### Collaborating
 
-Since you will be developing this code in a group, we highly recommend you use a private repository on `Github` and add each other as collaborators. Use version control and `git` commands (`commit`, `push`, `pull') to share code. 
+Since you will be developing this code in a group, we highly recommend you use a private repository on `Github` and add each other as collaborators. Use version control and `git` commands (`commit`, `push`, `pull`) to share code. 
 
 ### Developing
 
