@@ -1,5 +1,6 @@
 """
-Please answer the following ethics and reflection questions. 
+Please answer the following thought questions. These are questions that help you reflect
+on the process of building this chatbot and about ethics. 
 
 We are expecting at least three complete sentences for each question for full credit. 
 
@@ -42,13 +43,11 @@ Delete and put your answer here
 ######################################################################################
 
 """
-QUESTION 3 - Effects on Labor
+QUESTION 3 - Classifier 
 
-Advances in dialogue systems, and the language technologies based on them, could lead to the automation of 
-tasks that are currently done by paid human workers, such as responding to customer-service queries, 
-translating documents or writing computer code. These could displace workers and lead to widespread unemployment. 
-What do you think different stakeholders -- elected government officials, employees at technology companies, 
-citizens -- should do in anticipation of these risks and/or in response to these real-world harms? 
+When designing your chatbot, you had the choice of using a lexicon-based sentiment analysis module 
+or a statistical module (logistic regression). Which one did you end up choosing for your 
+system. Why? 
 """
 
 Q3_your_answer = """
@@ -61,8 +60,7 @@ Delete and put your answer here
 QUESTION 4 - Refelection 
 
 You just built a frame-based dialogue system using a combination of rule-based and machine learning 
-approaches. Congratulations! Brainstorm some advantages and disadvantages of this paradigm 
-compared to the end-to-end deep learning approach we will learn next, e.g. ChatGPT. 
+approaches. Congratulations! Reflect on the advantages and disadvantages of this paradigm. 
 """
 
 Q4_your_answer = """
