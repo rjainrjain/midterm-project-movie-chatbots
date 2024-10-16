@@ -50,7 +50,7 @@ chatbot > I'm sorry, I'm not quite sure if you liked "Rush Hour". Tell me more a
 user> I hate "Rush Hour".
 
 chatbot> Ok. You disliked "Rush Hour." There are multiple Rush Hours. 
-Did you mean "Rush Hour (1998)", "Rush Hour 2 (2001)", or "Rush Hour 3 (2007)"?
+Did you mean "Rush Hour (1998)", "Rush Hour 2 (2001)", or "Rush Hour 3 (2007)"? Please just write a substring. 
 
 user> Rush Hour 2
 
