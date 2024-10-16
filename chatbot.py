@@ -21,7 +21,7 @@ class Chatbot:
 
     def __init__(self):
         # The chatbot's default name is `moviebot`.
-        self.name = 'moviebot' # TODO: Give your chatbot a new name.
+        self.name = 'auteur' # TODO: Give your chatbot a new name.
 
         # This matrix has the following shape: num_movies x num_users
         # The values stored in each row i and column j is the rating for
@@ -50,12 +50,10 @@ class Chatbot:
 
         # TODO: delete and replace the line below
         return """
-        Your task is to implement the chatbot as detailed in the
-        instructions (README.md).
+        this is a chatbot which will provide you with film recommendations based on your proclivities.
+        give me a film and tell me how you felt about it. and maybe four more after that. 
 
-        To exit: write ":quit" (or press Ctrl-C to force the exit)
-
-        TODO: Write the description for your own chatbot here in the `intro()` function.
+        to exit: write ":quit" (or press Ctrl-C to force the exit)
         """
 
     def greeting(self) -> str:
@@ -65,7 +63,7 @@ class Chatbot:
         # TODO: Delete the line below and replace with your own                #
         ########################################################################
 
-        greeting_message = "How can I help you?"
+        greeting_message = "what's up?"
 
         ########################################################################
         #                             END OF YOUR CODE                         #
@@ -80,7 +78,7 @@ class Chatbot:
         # TODO: Delete the line below and replace with your own                #
         ########################################################################
 
-        goodbye_message = "Have a nice day!"
+        goodbye_message = "until next time..."
 
         ########################################################################
         #                          END OF YOUR CODE                            #
@@ -181,8 +179,12 @@ class Chatbot:
         """
         ########################################################################
         #                          START OF YOUR CODE                          #
-        ########################################################################                                             
-        return [] # TODO: delete and replace this line
+        ########################################################################
+        
+        regex = r'"([\w+| ]+)"'
+        
+        return re.findall(regex, user_input)
+    
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
@@ -223,7 +225,11 @@ class Chatbot:
         """
         ########################################################################
         #                          START OF YOUR CODE                          #
-        ########################################################################                                                 
+        ########################################################################  
+        
+        # get second group from this matcher for title
+        regex = r'(\d)%([\w+| ]+)(\(\d+\))%'
+        
         return [] # TODO: delete and replace this line
         ########################################################################
         #                          END OF YOUR CODE                            #
