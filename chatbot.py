@@ -254,7 +254,7 @@ class Chatbot:
 
           Used in the middle of this sample dialogue 
               moviebot> 'Tell me one movie you liked.'
-              user> '"Titanic"''
+              user> '"Titanic"'
               moviebot> 'Which movie did you mean:  "Titanic (1997)" or "Titanic (1953)"?'
               user> "1997"
               movieboth> 'Ok. You meant "Titanic (1997)"'
