@@ -181,9 +181,16 @@ class Chatbot:
         #                          START OF YOUR CODE                          #
         ########################################################################
         
+        # regex pattern to get anything within double quotes
         regex = r'"([\w+| ]+)"'
         
-        return re.findall(regex, user_input)
+        # match user input on the regex
+        tuples = re.findall(regex, user_input)
+        
+        # get a list of the matches
+        films = [fst for fst in tuples]
+        
+        return films
     
         ########################################################################
         #                          END OF YOUR CODE                            #
@@ -228,9 +235,31 @@ class Chatbot:
         ########################################################################  
         
         # get second group from this matcher for title
-        regex = r'(\d)%([\w+| ]+)(\(\d+\))%'
+        #regex = r'(\d+)%([\w+| ]+)(\(\d+\))%'
+        #regex = r'(\d+)%(.+)(\(\d+\))%'
         
-        return [] # TODO: delete and replace this line
+        # get movies.txt file contents into a string
+        #with open('data/movies.txt', 'r') as file:
+        #    data = file.read()
+            
+        # split lines
+        #lines = data.splitlines()
+        
+        # match the regex on each line
+        #tuples = [re.findall(regex, line) for line in lines]
+        
+        ret = []
+        #for item in tuples:
+        #    if len(item) > 0:
+        #        index, name, year = item[0]
+        #        if title in name:
+        #            ret.append(int(index))       
+        
+        for i in range(len(self.titles)):
+            if title in self.titles[i][0]:
+                ret.append(i)
+        
+        return ret
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
