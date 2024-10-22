@@ -182,7 +182,8 @@ class Chatbot:
         ########################################################################
         
         # regex pattern to get anything within double quotes
-        regex = r'"([\w+| ]+)"'
+        regex = r'"([^"]+)"'
+        #regex = r'"([\w+| ]+)"'
         
         # match user input on the regex
         tuples = re.findall(regex, user_input)
@@ -316,13 +317,16 @@ class Chatbot:
             - You might find one or more of the following helpful: 
               re.search, re.findall, re.match, re.escape, re.compile
         """
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################                                                 
-        return [] # TODO: delete and replace this line
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
+        clarified_list = []
+
+        for movie_index in candidates:
+            line = self.titles[movie_index][0]
+            matches = re.findall(clarification, line)
+            for match in matches:
+                if match != None:
+                    clarified_list.append(movie_index)
+        return clarified_list
+    
 
     ############################################################################
     # 3. Sentiment                                                             #
