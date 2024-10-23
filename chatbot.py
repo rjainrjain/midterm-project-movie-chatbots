@@ -239,31 +239,15 @@ class Chatbot:
         #                          START OF YOUR CODE                          #
         ########################################################################  
         
-        # get second group from this matcher for title
-        #regex = r'(\d+)%([\w+| ]+)(\(\d+\))%'
-        #regex = r'(\d+)%(.+)(\(\d+\))%'
-        
-        # get movies.txt file contents into a string
-        #with open('data/movies.txt', 'r') as file:
-        #    data = file.read()
-            
-        # split lines
-        #lines = data.splitlines()
-        
-        # match the regex on each line
-        #tuples = [re.findall(regex, line) for line in lines]
-        
+        # initialize empty array of movies
         ret = []
-        #for item in tuples:
-        #    if len(item) > 0:
-        #        index, name, year = item[0]
-        #        if title in name:
-        #            ret.append(int(index))       
         
+        # look for matching movies in self.titles and add them to ret
         for i in range(len(self.titles)):
             if title in self.titles[i][0]:
                 ret.append(i)
         
+        # return the resulting list of matched movies
         return ret
         ########################################################################
         #                          END OF YOUR CODE                            #
@@ -351,7 +335,7 @@ class Chatbot:
 
         This function should return 
         -1 (negative sentiment): if neg_tok_count > pos_tok_count
-        0 (neural): if neg_tok_count is equal to pos_tok_count
+        0 (neutral): if neg_tok_count is equal to pos_tok_count
         +1 (postive sentiment): if neg_tok_count < pos_tok_count
 
         Example:
@@ -414,22 +398,25 @@ class Chatbot:
         #load training data  
         texts, y = util.load_rotten_tomatoes_dataset()
         
-        texts = [[word.lower() for word in text] for text in texts]
-        print(texts)
+        # lowercase all the texts
+        texts = [text.lower() for text in texts]
 
-        self.count_vectorizer = CountVectorizer(min_df=20,stop_words='english',max_features=1000)  
-        X = self.count_vectorizer.fit_transform(texts)
         
+        # fit a count vectorizer to learn the vocab
+        self.count_vectorizer = CountVectorizer(min_df=20,stop_words='english',max_features=1000)  
+        self.X = self.count_vectorizer.fit_transform(texts).toarray()
+        
+        # train a logistic regression classifier on X and y
         self.model = LogisticRegression()
-        self.model.fit(X, y)
+        self.model.fit(self.X, y)
         pass 
 
 
     def predict_sentiment_statistical(self, user_input: str) -> int: 
         """ 
-        Uses a trained bag-of-words Logistic Regression classifier to classifier the sentiment
+        Uses a trained bag-of-words Logistic Regression classifier to classify the sentiment
 
-        In this function you'll also uses sklearn's CountVectorizer that has been 
+        In this function you'll also use sklearn's CountVectorizer that has been 
         fit on the training data to get bag-of-words representation.
 
         Example 1:
@@ -459,7 +446,25 @@ class Chatbot:
         ########################################################################
         #                          START OF YOUR CODE                          #
         ########################################################################                                             
-        return 0 # TODO: delete and replace this line
+        
+        # preset sentiment to 0
+        sentiment = 0
+        
+        # use fitted vectorizer to eval the user input into bag of words
+        vectorized = self.count_vectorizer.transform([user_input]).toarray()
+        
+        # if at least 1 word in the input is in the vocab, then predict
+        if np.any(vectorized):
+            # predict!
+            pred = self.model.predict(vectorized)
+            
+            # if it's fresh, it's positive; otherwise, it's negative
+            if pred == "Fresh":
+                sentiment = 1
+            else:
+                sentiment = -1
+        
+        return sentiment
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
@@ -500,8 +505,24 @@ class Chatbot:
         """ 
         ########################################################################
         #                          START OF YOUR CODE                          #
-        ########################################################################                                                    
-        return [""]  # TODO: delete and replace this line
+        ########################################################################
+        
+        # make sure precondition is satisfied
+        assert len(user_ratings.keys()) >= 5
+        
+        # put user ratings at correct indices in an array of all user ratings
+        user_array = np.zeros(len(self.titles))
+        for key in user_ratings.keys():
+            user_array[key] = user_ratings[key]
+        
+        # call util.recommend to get indices for recommendations
+        indices = util.recommend(user_array, self.ratings, num_return)
+        
+        # get titles at indices
+        films = [self.titles[i][0] for i in indices]
+        
+        # return those titles as the recommendations
+        return films
         ########################################################################
         #                          END OF YOUR CODE                            #
         ########################################################################
