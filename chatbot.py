@@ -217,6 +217,10 @@ class Chatbot:
           ids = chatbot.find_movies_idx_by_title('Twelve Monkeys')
           print(ids) // prints [31]
 
+        Example 3: 
+          ids = chatbot.find_movies_idx_by_title("Michael Collins (1996)")
+          print(ids) // prints [800]
+
         Arguments:
             - title (str): the movie title 
 
@@ -286,7 +290,7 @@ class Chatbot:
 
           Used in the middle of this sample dialogue 
               moviebot> 'Tell me one movie you liked.'
-              user> '"Titanic"''
+              user> '"Titanic"'
               moviebot> 'Which movie did you mean:  "Titanic (1997)" or "Titanic (1953)"?'
               user> "1997"
               movieboth> 'Ok. You meant "Titanic (1997)"'
