@@ -396,7 +396,11 @@ class Chatbot:
             - We achieve greater than accuracy 0.7 on the training dataset. 
         """ 
         #load training data  
-        texts, y = util.load_rotten_tomatoes_dataset()
+        texts, y_str = util.load_rotten_tomatoes_dataset()
+        
+        # transform class labels to ints
+        y = [-1 if elem=="Rotten" else 1 for elem in y_str]
+        print(y)
         
         # lowercase all the texts
         texts = [text.lower() for text in texts]
@@ -456,14 +460,8 @@ class Chatbot:
         # if at least 1 word in the input is in the vocab, then predict
         if np.any(vectorized):
             # predict!
-            pred = self.model.predict(vectorized)
-            
-            # if it's fresh, it's positive; otherwise, it's negative
-            if pred == "Fresh":
-                sentiment = 1
-            else:
-                sentiment = -1
-        
+            sentiment = self.model.predict(vectorized)[0]
+
         return sentiment
         ########################################################################
         #                          END OF YOUR CODE                            #
@@ -532,12 +530,39 @@ class Chatbot:
     # 5. Open-ended                                                            #
     ############################################################################
 
-    def function1():
+    def function1(self, user_input: str):
         """
-        TODO: delete and replace with your function.
-        Be sure to put an adequate description in this docstring.  
+        This function takes in a user input string.
+        It identifies movies without quotation marks and ignores incorrect capitalization.
+        This function returns a list of the movies identified in the user input string.
         """
-        pass
+        # initialize empty array of movies
+        ret = []
+       
+        # regex to capture title
+        #regex = r'([\w+| ]+)(?:\(\d+\))'
+        regex = r'(.+)(?:\(\d+\))'
+        
+        # look for matching movies in self.titles and add them to ret
+        for i in range(len(self.titles)):
+                
+            # match on title, discard year
+            matches = re.findall(regex, self.titles[i][0].lower())
+            
+            if len(matches) == 0:
+                continue
+            
+            # strip the whitespace
+            title = matches[0].strip()
+
+                
+            # detect title in user string
+            if title in user_input.lower():
+               # add actual title to list
+               ret.append(self.titles[i][0])
+        
+        # return the resulting list of matched movies
+        return ret
 
     def function2():
         """
