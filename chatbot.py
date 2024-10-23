@@ -10,6 +10,7 @@ import re
 import sklearn
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
 import nltk 
 from collections import defaultdict, Counter
 from typing import List, Dict, Union, Tuple
@@ -183,7 +184,6 @@ class Chatbot:
         
         # regex pattern to get anything within double quotes
         regex = r'"([^"]+)"'
-        #regex = r'"([\w+| ]+)"'
         
         # match user input on the regex
         tuples = re.findall(regex, user_input)
@@ -363,13 +363,28 @@ class Chatbot:
             - Take a look at self.sentiment (e.g., in scratch.ipynb)
             - Remember we want the count of *tokens* not *types*
         """
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################                                                  
-        return 0 # TODO: delete and replace this line
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
+        pos_tok_count = 0
+        neg_tok_count = 0
+        
+        user_input_tokens = re.sub(r'[^\w\s]', '', user_input)
+        
+        for tok in user_input_tokens.lower().split():
+            sentiment = self.sentiment.get(tok)
+            if tok in self.sentiment:
+                if self.sentiment[tok] == "pos":
+                    print("pos word: " + tok)
+                    pos_tok_count += 1
+                else:
+                    neg_tok_count += 1
+                    print("neg word: " + tok)
+                    
+        if pos_tok_count > neg_tok_count:
+            return 1
+        elif pos_tok_count == neg_tok_count:
+            return 0
+        else:
+            return -1
+ 
 
     def train_logreg_sentiment_classifier(self):
         """
@@ -394,19 +409,16 @@ class Chatbot:
         """ 
         #load training data  
         texts, y = util.load_rotten_tomatoes_dataset()
-
-        self.model = None #variable name that will eventually be the sklearn Logistic Regression classifier you train 
-        self.count_vectorizer = None #variable name will eventually be the CountVectorizer from sklearn 
-
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################                                                
         
-        pass # TODO: delete and replace this line
+        texts = [[word.lower() for word in text] for text in texts]
+        print(texts)
 
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
+        self.count_vectorizer = CountVectorizer(min_df=20,stop_words='english',max_features=1000)  
+        X = self.count_vectorizer.fit_transform(texts)
+        
+        self.model = LogisticRegression()
+        self.model.fit(X, y)
+        pass 
 
 
     def predict_sentiment_statistical(self, user_input: str) -> int: 
