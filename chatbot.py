@@ -549,15 +549,17 @@ class Chatbot:
             # match on title, discard year
             matches = re.findall(regex, self.titles[i][0].lower())
             
+            # continue if no matches
             if len(matches) == 0:
                 continue
             
             # strip the whitespace
             title = matches[0].strip()
-
+            
+            regex2 = r'\b' + re.escape(title) + r'\b'
                 
             # detect title in user string
-            if title in user_input.lower():
+            if len(re.findall(regex2, user_input.lower())) > 0:
                # add actual title to list
                ret.append(self.titles[i][0])
         
