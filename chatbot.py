@@ -59,31 +59,18 @@ class Chatbot:
 
     def greeting(self) -> str:
         """Return a message that the chatbot uses to greet the user."""
-        
-        ########################################################################
-        # TODO: Delete the line below and replace with your own                #
-        ########################################################################
 
         greeting_message = "what's up?"
 
-        ########################################################################
-        #                             END OF YOUR CODE                         #
-        ########################################################################
         return greeting_message
 
     def goodbye(self) -> str:
         """
         Return a message that the chatbot uses to bid farewell to the user.
         """
-        ########################################################################
-        # TODO: Delete the line below and replace with your own                #
-        ########################################################################
 
         goodbye_message = "until next time..."
 
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
         return goodbye_message
 
     def debug(self, line):
@@ -130,18 +117,9 @@ class Chatbot:
             variables when dealing with the REPL loop. 
             - Feel free to make as many helper funtions as you would like 
         """
-        ########################################################################
-        # TODO: Implement the extraction and transformation in this method,    #
-        # possibly calling other functions. Although your code is not graded   #
-        # directly based on how modular it is, we highly recommended writing   #
-        # code in a modular fashion to make it easier to improve and debug.    #
-        ########################################################################
 
         response = "I (the chatbot) processed '{}'".format(line)
 
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
         return response
 
     def extract_titles(self, user_input: str) -> List[str]:
@@ -178,9 +156,6 @@ class Chatbot:
         Hints: 
             - What regular expressions would be helpful here? 
         """
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################
         
         # regex pattern to get anything within double quotes
         regex = r'"([^"]+)"'
@@ -193,9 +168,6 @@ class Chatbot:
         
         return films
     
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
 
     def find_movies_idx_by_title(self, title:str) -> List[int]:
         """ 
@@ -234,10 +206,7 @@ class Chatbot:
               re.search, re.findall, re.match, re.escape, re.compile
             - Our solution only takes about 7 lines. If you're using much more 
             than that try to think of a more concise approach 
-        """
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################  
+            """
         
         # initialize empty array of movies
         ret = []
@@ -249,9 +218,6 @@ class Chatbot:
         
         # return the resulting list of matched movies
         return ret
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
 
 
     def disambiguate_candidates(self, clarification: str, candidates: list) -> List[int]: 
@@ -446,10 +412,7 @@ class Chatbot:
         Hints: 
             - Be sure to lower-case the user input 
             - Don't forget about a case for the 0 class! 
-        """
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################                                             
+        """                                           
         
         # preset sentiment to 0
         sentiment = 0
@@ -463,9 +426,6 @@ class Chatbot:
             sentiment = self.model.predict(vectorized)[0]
 
         return sentiment
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
 
 
     ############################################################################
@@ -501,9 +461,6 @@ class Chatbot:
             - It may be helpful to play around with util.recommend() in scratch.ipynb
             to make sure you know what this function is doing. 
         """ 
-        ########################################################################
-        #                          START OF YOUR CODE                          #
-        ########################################################################
         
         # make sure precondition is satisfied
         assert len(user_ratings.keys()) >= 5
@@ -521,9 +478,6 @@ class Chatbot:
         
         # return those titles as the recommendations
         return films
-        ########################################################################
-        #                          END OF YOUR CODE                            #
-        ########################################################################
 
 
     ############################################################################
@@ -533,14 +487,14 @@ class Chatbot:
     def function1(self, user_input: str):
         """
         This function takes in a user input string.
-        It identifies movies without quotation marks and ignores incorrect capitalization.
-        This function returns a list of the movies identified in the user input string.
+        It identifies movies without quotation marks, ignoring incorrect capitalization, and rejects titles which are strict substrings of other titles.
+        It returns a list of the movies identified in the user input string.
         """
         # initialize empty array of movies
-        ret = []
+        movies = []
+        indices = []
        
         # regex to capture title
-        #regex = r'([\w+| ]+)(?:\(\d+\))'
         regex = r'(.+)(?:\(\d+\))'
         
         # look for matching movies in self.titles and add them to ret
@@ -561,20 +515,41 @@ class Chatbot:
             # detect title in user string
             t = re.findall(regex2, user_input.lower())
             if len(t) > 0:
-                print(t)
                 # add actual title to list if it's not a substring of already-added film
-                if all([t[0] not in film for film in ret]):
-                    ret.append(self.titles[i][0])
+                if all([t[0] not in film for film in movies]):
+                    movies.append(self.titles[i][0])
+                    indices.append(i)
+        print(movies)
+        # return the resulting list of matched movies
+        return indices
+
+    def function2(self, title: str):
+        """
+        This function takes in a title. 
+        It matches on self.titles, accounting for articles (e.g. matching An American in Paris with American in Paris, An).
+        It returns a list of the matched indices.
+        """
+        # capture the title split into not-article and article
+        regex = r'(.+), ([An|The|A]+)[ |^\)]?'
+        
+        # match on all titles
+        remove_parens = [re.findall(r'^[^\(]*', item[0]) for item in self.titles]
+        regexed = [re.findall(regex, item[0]) for item in remove_parens]
+        
+        # transform into article + not-article form
+        titles = [match[0][1] + " " + match[0][0] if len(match)>0 else "" for match in regexed]
+        
+        # initialize empty array of movies
+        indices = []
+        
+        # look for matching movies in self.titles and add them to ret
+        for i in range(len(titles)):
+            if title in titles[i]:
+                indices.append(i)
         
         # return the resulting list of matched movies
-        return ret
-
-    def function2():
-        """
-        TODO: delete and replace with your function.
-        Be sure to put an adequate description in this docstring.  
-        """
-        pass  
+        return indices
+            
 
     def function3(): 
         """
