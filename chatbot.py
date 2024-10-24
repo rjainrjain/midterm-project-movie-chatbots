@@ -559,9 +559,12 @@ class Chatbot:
             regex2 = r'\b' + re.escape(title) + r'\b'
                 
             # detect title in user string
-            if len(re.findall(regex2, user_input.lower())) > 0:
-               # add actual title to list
-               ret.append(self.titles[i][0])
+            t = re.findall(regex2, user_input.lower())
+            if len(t) > 0:
+                print(t)
+                # add actual title to list if it's not a substring of already-added film
+                if all([t[0] not in film for film in ret]):
+                    ret.append(self.titles[i][0])
         
         # return the resulting list of matched movies
         return ret
