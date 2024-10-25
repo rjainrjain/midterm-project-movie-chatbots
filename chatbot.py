@@ -22,7 +22,7 @@ class Chatbot:
 
     def __init__(self):
         # The chatbot's default name is `moviebot`.
-        self.name = 'auteur' # TODO: Give your chatbot a new name.
+        self.name = 'auteur' 
 
         # This matrix has the following shape: num_movies x num_users
         # The values stored in each row i and column j is the rating for
@@ -35,10 +35,11 @@ class Chatbot:
         # Train the classifier
         self.train_logreg_sentiment_classifier()
 
-        # TODO: put any other class variables you need here 
+        # used in process
         self.state = "rate"
         self.rated_films = {}
         self.rated_count = 0
+        self.current_movie = ""
 
     ############################################################################
     # 1. WARM UP REPL                                                          #
@@ -52,7 +53,6 @@ class Chatbot:
         chatbot can do and how the user can interact with it.
         """
 
-        # TODO: delete and replace the line below
         return """
         this is a chatbot which will provide you with film recommendations based on your proclivities.
         give me a film and tell me how you felt about it. and maybe four more after that. 
@@ -121,31 +121,37 @@ class Chatbot:
             - Feel free to make as many helper funtions as you would like 
         """
         response = ""
+        print("rateed movie count: " +str(self.rated_count))
         
+        # rate state
         # check to see if we have enough rates to make a recommendation, if so, skip to recommend state
         if self.rated_count == 5:
             self.state = "recommend"
-        
-        # rate state
+
         if self.state == "rate":
             extracted_titles = self.extract_titles(line)
+            print(extracted_titles)
             
-            # if no titles are found, try function1
-            if len(extracted_titles) == 0:
-                extracted_titles = self.function1(line)
+            # # if no titles are found, try function1
+            # if len(extracted_titles) == 0:
+            #     extracted_titles = self.function1(line)
+            #     print(extracted_titles)
                 
-            # if still no titles found, ask to try another movie
+            # if no titles found, ask to try another movie
             if len(extracted_titles) == 0:
                 response = "I couldn't find any movie name in '{}'. Please try again.".format(line)
                        
             # if a title is found from either extract_titles or func1, detect sentiment and store in dict w title            
             if len(extracted_titles) == 1:
-                predicted_sent = self.predict_sentiment_statistical(line)
+                self.current_movie = extracted_titles[0]
+                predicted_sent = self.predict_sentiment_rule_based(line)
+                print(predicted_sent)
                 
-                indices = self.find_movies_idx_by_title(extracted_titles[0])
+                indices = self.find_movies_idx_by_title(self.current_movie)
                 if len(indices) > 1:
-                    movies = [extracted_titles[index] for index in indices] 
-                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to?".format(movies)
+                    movies = [self.titles[index] for index in indices] 
+                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to? Please tell us the date in quotations".format(movies)
+                    
                     self.state = "disambiguate"
                     return response
                     
@@ -155,12 +161,12 @@ class Chatbot:
                         
                  # if sentiment is positive
                 if predicted_sent == 1:
-                    #self.rate_movie(extracted_titles[0], 1)
+                    self.rate_movie(self.current_movie)
                     response = "So you liked {}. I'm glad! Can you give me another movie?".format(extracted_titles[0])
                             
                  # if sentiment is negative
                 if predicted_sent == -1:
-                    self.rate_movie(extracted_titles[0], -1)
+                    self.rate_movie(self.current_movie)
                     response = "So you didn't like {}. Sorry about it. Can you give me another movie?".format(extracted_titles[0])
             
             # if extract_titles gives back several titles
@@ -170,32 +176,37 @@ class Chatbot:
             
         # disambiguate state
         if self.state == "disambiguate":
-            extracted_titles = self.extract_titles(line)
-            extracted_titles = self.disambiguate_candidates(line, self.find_movies_idx_by_title(extracted_titles[0]))
-            if len(extracted_titles) == 1:
-                response = "Awesome, thanks. Let's keep going then"
-                self.state = "rate" 
-            elif len(extracted_titles) > 1:
-                response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to?".format(self.find_movies_idx_by_title(extracted_titles[0]))
-            elif len(extracted_titles) == 0:
-                response = "I couldn't resolve the title. Could you please clarify the title again?"
-                self.state = "rate"
+            clarification = self.extract_titles(line)
+            if len(clarification) ==1:
+                disambiguated_list = self.disambiguate_candidates(clarification[0], self.find_movies_idx_by_title(self.current_movie))
+                print(disambiguated_list)
+                if len(disambiguated_list) == 1:
+                    self.rate_movie(self.current_movie)
+                    response = "Awesome, thanks. Let's keep going then"
+                    self.state = "rate" 
+                elif len(disambiguated_list) > 1:
+                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to? Please share the year it was made in quotations".format(self.find_movies_idx_by_title(extracted_titles[0]))
+                elif len(disambiguated_list) == 0:
+                    response = "I couldn't resolve the title. Could you please clarify the title again?"
+                    self.state = "rate"
+                    self.current_movie = ""
+            else:
+                response = "Please only enter one date"
             
         # recommend state        
         if self.state == "recommend":
-            if line.lower == "no":
+            if line.lower() == "no":
                 response = self.goodbye()
                 self.state = "rate"
-            self.rated_count = 0
+                self.rated_count = 0
             recommended = self.recommend_movies(self.rated_films, 3)
             response = "I've finally got your recs ready for you... {}. Would you like to hear another?".format(recommended)
 
         return response
     
-    def rate_movie(self, title:str, sentiment:int):
-        index = self.find_movies_idx_by_title(title)[0]
-        movie_title = self.titles[index][0]
-        self.rated_films[movie_title] = sentiment
+    def rate_movie(self, title:str):
+        predicted_sent = self.predict_sentiment_rule_based(title)
+        self.rated_films[title] = predicted_sent
         self.rated_count += 1
 
     def extract_titles(self, user_input: str) -> List[str]:
@@ -402,11 +413,9 @@ class Chatbot:
             sentiment = self.sentiment.get(tok)
             if tok in self.sentiment:
                 if self.sentiment[tok] == "pos":
-                    print("pos word: " + tok)
                     pos_tok_count += 1
                 else:
                     neg_tok_count += 1
-                    print("neg word: " + tok)
                     
         if pos_tok_count > neg_tok_count:
             return 1
@@ -442,7 +451,6 @@ class Chatbot:
         
         # transform class labels to ints
         y = [-1 if elem=="Rotten" else 1 for elem in y_str]
-        print(y)
         
         # lowercase all the texts
         texts = [text.lower() for text in texts]
@@ -595,7 +603,6 @@ class Chatbot:
                 if all([t[0] not in film for film in movies]):
                     movies.append(self.titles[i][0])
                     indices.append(i)
-        print(movies)
         # return the resulting list of matched movies
         return indices
 
