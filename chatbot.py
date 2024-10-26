@@ -40,6 +40,9 @@ class Chatbot:
         self.rated_films = {}
         self.rated_count = 0
         self.current_movie = ""
+        self.current_mov_sentiment = ""
+        self.indices = []
+        self.rec_num = 0
 
     ############################################################################
     # 1. WARM UP REPL                                                          #
@@ -63,7 +66,7 @@ class Chatbot:
     def greeting(self) -> str:
         """Return a message that the chatbot uses to greet the user."""
 
-        greeting_message = "What's up? Tell me a movie you liked with the movie name in quotations."
+        greeting_message = "What's up? Tell me a movie you like with the movie name in quotations."
 
         return greeting_message
 
@@ -121,7 +124,7 @@ class Chatbot:
             - Feel free to make as many helper funtions as you would like 
         """
         response = ""
-        print("rateed movie count: " +str(self.rated_count))
+        print("rated movie count: " + str(self.rated_count))
         
         # rate state
         # check to see if we have enough rates to make a recommendation, if so, skip to recommend state
@@ -130,84 +133,117 @@ class Chatbot:
 
         if self.state == "rate":
             extracted_titles = self.extract_titles(line)
+            print("extracted_titles: ")
             print(extracted_titles)
-            
-            # # if no titles are found, try function1
-            # if len(extracted_titles) == 0:
-            #     extracted_titles = self.function1(line)
-            #     print(extracted_titles)
                 
             # if no titles found, ask to try another movie
             if len(extracted_titles) == 0:
                 response = "I couldn't find any movie name in '{}'. Please try again.".format(line)
                        
-            # if a title is found from either extract_titles or func1, detect sentiment and store in dict w title            
+            # if a title is found from extract_titles, store the title, sentiment, and index (or indices) of movie in class vars            
             if len(extracted_titles) == 1:
                 self.current_movie = extracted_titles[0]
-                predicted_sent = self.predict_sentiment_rule_based(line)
-                print(predicted_sent)
-                
-                indices = self.find_movies_idx_by_title(self.current_movie)
-                if len(indices) > 1:
-                    movies = [self.titles[index] for index in indices] 
-                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to? Please tell us the date in quotations".format(movies)
-                    
+                self.current_mov_sentiment = self.predict_sentiment_rule_based(line)
+                self.indices = self.find_movies_idx_by_title(self.current_movie)
+                print("current movie: ")
+                print(self.current_movie)
+                print("indices of current movie: ")
+                print(self.indices)
+                print("sentiment of current movie: ")
+                print(self.current_mov_sentiment)
+
+                # if the movie title has more than one index (sequels, etc.)
+                if len(self.indices) > 1:
+                    movies = [self.titles[index] for index in self.indices] 
+                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to? Please tell us the date in quotations.".format(movies)
                     self.state = "disambiguate"
                     return response
-                    
-                 # if sentiment is unclear
-                if predicted_sent == 0:
-                    response = "I wasn't able to tell whether you enjoyed {} or not. Could you clarify?".format(extracted_titles[0])
-                        
-                 # if sentiment is positive
-                if predicted_sent == 1:
-                    self.rate_movie(self.current_movie)
-                    response = "So you liked {}. I'm glad! Can you give me another movie?".format(extracted_titles[0])
+
+                if len(self.indices) == 1:    
+                    # if sentiment is unclear
+                    if self.current_mov_sentiment == 0:
+                        response = "I wasn't able to tell whether you enjoyed {} or not. Could you clarify?".format(self.current_movie)
                             
-                 # if sentiment is negative
-                if predicted_sent == -1:
-                    self.rate_movie(self.current_movie)
-                    response = "So you didn't like {}. Sorry about it. Can you give me another movie?".format(extracted_titles[0])
-            
+                    # if sentiment is positive
+                    if self.current_mov_sentiment == 1:
+                        self.rate_movie(self.current_movie)
+                        # if self.rated_count == 5:
+                        #     self.state = "recommend"
+                        response = "So you liked {}. I'm glad! Can you give me another movie?".format(self.current_movie)
+                                
+                    # if sentiment is negative
+                    if self.current_mov_sentiment == -1:
+                        self.rate_movie(self.current_movie)
+                        # if self.rated_count == 5:
+                        #     self.state = "recommend"
+                        response = "So you didn't like {}. Sorry about it. Can you give me another movie?".format(self.current_movie)
+                
+                if len(self.indices) == 0: 
+                    response = "I couldn't find {} movie in my database. Could you tell me another movie you like or dislike?".format(self.current_movie)
+                    
+                
             # if extract_titles gives back several titles
             if len(extracted_titles) > 1:
-                response = "Please just give us one movie title at a time. Which of the following did you mean: {}".format(extracted_titles)
+                response = "Please just give us one movie title at a time. Which of the following did you mean: {}?".format(extracted_titles)
             
             
         # disambiguate state
         if self.state == "disambiguate":
             clarification = self.extract_titles(line)
             if len(clarification) ==1:
-                disambiguated_list = self.disambiguate_candidates(clarification[0], self.find_movies_idx_by_title(self.current_movie))
+                disambiguated_list = self.disambiguate_candidates(clarification[0], self.indices)
+                print("disambiguated index list: ")
                 print(disambiguated_list)
                 if len(disambiguated_list) == 1:
+                    self.current_movie = self.titles[disambiguated_list[0]][0]
+                    print("current movie: ")
+                    print(self.current_movie)
                     self.rate_movie(self.current_movie)
-                    response = "Awesome, thanks. Let's keep going then"
+                    response = "Awesome, thanks. Let's keep going then."
                     self.state = "rate" 
+                    self.indices = []
                 elif len(disambiguated_list) > 1:
-                    response = "It seems there are several matches to the movie title you named. Which of {} is the movie you were referring to? Please share the year it was made in quotations".format(self.find_movies_idx_by_title(extracted_titles[0]))
+                    disambiguated_list_titles = [self.titles[index] for index in disambiguated_list] 
+                    response = "Hmm it still seems that there are several matches to the movie and year you named. Which of {} is the movie you were referring to? Please share the movie title AND year it was made in quotations.".format(disambiguated_list_titles)
                 elif len(disambiguated_list) == 0:
                     response = "I couldn't resolve the title. Could you please clarify the title again?"
                     self.state = "rate"
                     self.current_movie = ""
             else:
-                response = "Please only enter one date"
+                response = "Please only enter one date."
             
         # recommend state        
         if self.state == "recommend":
+            recommended = self.recommend_movies(self.rated_films, 3)
+    
             if line.lower() == "no":
                 response = self.goodbye()
-                self.state = "rate"
-                self.rated_count = 0
-            recommended = self.recommend_movies(self.rated_films, 3)
-            response = "I've finally got your recs ready for you... {}. Would you like to hear another?".format(recommended)
+                print(response)  
+                exit() 
 
+            if self.rec_num < len(recommended):
+                response = "I finally have a recommendation ready for you... {}. Would you like to hear another?".format(recommended[self.rec_num])
+                self.rec_num += 1
+            else:
+                response = self.goodbye()
+                print(response)  
+                exit() 
+                
         return response
     
-    def rate_movie(self, title:str):
-        predicted_sent = self.predict_sentiment_rule_based(title)
-        self.rated_films[title] = predicted_sent
-        self.rated_count += 1
+    def rate_movie(self, title: str):
+        if self.current_mov_sentiment != 0:
+            print("title being rated: " + title)
+            index = self.find_movies_idx_by_title(title)[0]
+            self.rated_films[index] = self.current_mov_sentiment
+            self.rated_count += 1
+            self.current_mov_sentiment = ""
+            if self.rated_count == 5:
+                print("ready to recommend")
+                self.state = "recommend"
+            print(self.rated_films)
+        else:
+            print("title rated neutrally and not recorded in dict")
 
     def extract_titles(self, user_input: str) -> List[str]:
         """
@@ -604,7 +640,7 @@ class Chatbot:
                     movies.append(self.titles[i][0])
                     indices.append(i)
         # return the resulting list of matched movies
-        return indices
+        return movies
 
     def function2(self, title: str):
         """
